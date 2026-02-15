@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Thinfin</h1>
-  <p><strong>Standalone client for [Sharkord](https://github.com/sharkord/sharkord), a self-hosted real-time communication platform</strong></p>
+  <p><strong>Standalone client for https://github.com/sharkord/sharkord, a self-hosted real-time communication platform</strong></p>
 </div>
 
 ## What is Thinfin?
