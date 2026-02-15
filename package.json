@@ -1,0 +1,45 @@
+{
+  "name":"thinfin-desktop",
+  "version": "0.0.1",
+  "description": "Desktop client for Sharkord",
+  "main": "main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "keywords": [],
+  "author": "pixelsdontmove",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "electron": "^34.0.1",
+    "electron-builder": "^25.1.8"
+  },
+  "overrides": {
+    "glob-parent": "^6.0.2",
+    "nth-check": "^2.0.1"
+  },
+  "build": {
+    "appId": "com.thinfin.desktop",
+    "productName": "Thinfin",
+    "asar": true,
+    "files": [
+      "main.js",
+      "package.json",
+      "splash.html",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "portable": {
+      "artifactName": "Thinfin.exe"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  }
+}
