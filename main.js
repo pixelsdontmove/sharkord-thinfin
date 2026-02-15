@@ -77,18 +77,17 @@ function createWindow() {
     }
   });
 
-  mainWindow.webContents.on('page-title-updated', (event) => {
+  mainWindow.on('page-title-updated', (event) => {
     event.preventDefault();
+    mainWindow.setTitle("Thinfin");
   });
 
   mainWindow.loadFile('splash.html');
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
-
-    mainWindow.loadURL(config.url, {
-      userAgent: config.userAgent
-    });
+    mainWindow.loadURL(config.url, { userAgent: config.userAgent });
+    mainWindow.setTitle("Thinfin");
   });
 
   //no
