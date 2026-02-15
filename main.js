@@ -47,7 +47,7 @@ const config = {
     backgroundColor: "#1a1a1a",
     width: 1280,
     height: 800,
-    title: "Thinfin",
+    title: app.getName(),
     show: false
   },
   url: getTargetUrl(),
@@ -67,6 +67,9 @@ function createWindow() {
     title: config.window.title,
     backgroundColor: config.window.backgroundColor,
     show: false,
+
+    icon: path.join(__dirname, 'assets/icon.ico'),
+
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
