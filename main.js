@@ -47,7 +47,7 @@ const config = {
     backgroundColor: "#1a1a1a",
     width: 1280,
     height: 800,
-    title: app.getName(),
+    title: "Thinfin",
     show: false
   },
   url: getTargetUrl(),
@@ -75,6 +75,10 @@ function createWindow() {
       sandbox: true,
       nodeIntegration: false
     }
+  });
+
+  mainWindow.webContents.on('page-title-updated', (event) => {
+    event.preventDefault();
   });
 
   mainWindow.loadFile('splash.html');
