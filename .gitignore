@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Build outputs
+dist/
+build/
+out/
+*.exe
+*.msi
+
+# OS metadata (MS)
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment secrets
+.env
+.env.local
