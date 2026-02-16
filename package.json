@@ -1,6 +1,6 @@
 {
   "name":"thinfin-desktop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Desktop client for Sharkord",
   "main": "main.js",
   "type": "commonjs",
@@ -12,7 +12,7 @@
   "author": "pixelsdontmove",
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "electron": "^34.0.1",
+    "electron": "^29.3.0",
     "electron-builder": "^25.1.8"
   },
   "overrides": {

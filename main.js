@@ -6,10 +6,10 @@ const fs = require("fs");
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
 
-// Webcam still doesnt work
+//a bunch of flags for legacy workaround (stream, audio)
 app.commandLine.appendSwitch('disable-features', 'WebRtcHideLocalIpsWithMdns,MediaFoundationVideoCapture');
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
-//app.commandLine.appendSwitch('use-fake-ui-for-media-stream');
+
 
 let mainWindow;
 
@@ -51,7 +51,7 @@ const config = {
     show: false
   },
   url: getTargetUrl(),
-  userAgent: "Thinfin/0.0.1",
+  userAgent: "Thinfin/0.0.2",
   allowedPermissions: ['media', 'videoinput', 'audioinput', 'notifications']
 };
 
