@@ -10,6 +10,11 @@ app.commandLine.appendSwitch('force-color-profile', 'srgb');
 app.commandLine.appendSwitch('disable-features', 'WebRtcHideLocalIpsWithMdns,MediaFoundationVideoCapture');
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
+//linux, wayland test
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('enable-features', 'WebRTCPipeWireCapturer');
+}
+
 
 let mainWindow;
 
