@@ -1,4 +1,4 @@
-\<div align="center"\> \<h1\>Thinfin\</h1\> \<p\>\<strong\>Desktop client for https://github.com/sharkord/sharkord.\</strong\>\</p\> \</div\>
+<div align="center"> <h1>Thinfin</h1> <p><strong>Desktop client for https://github.com/sharkord/sharkord.</strong></p> </div>
 
 ## Credits
 
