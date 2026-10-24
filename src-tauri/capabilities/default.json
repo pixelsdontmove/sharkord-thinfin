@@ -1,12 +1,28 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "sharkord client ipc: event registration for the capture bridge and chrome bar, window dragging from the custom title bar",
+  "description": "local ipc for the bar and shell webviews: event registration for the capture bridge and chrome bar, window dragging from the custom title bar, and the app commands",
   "windows": ["main"],
   "permissions": [
     "core:event:default",
     "core:window:allow-start-dragging",
     "core:window:allow-is-maximized",
-    "core:window:allow-toggle-maximize"
+    "core:window:allow-toggle-maximize",
+    "allow-capture-log",
+    "allow-close-app",
+    "allow-get-servers",
+    "allow-add-server",
+    "allow-clear-server",
+    "allow-open-server",
+    "allow-get-settings",
+    "allow-save-settings",
+    "allow-hk-start-capture",
+    "allow-hk-cancel-capture",
+    "allow-minimize-to-tray",
+    "allow-hide-share-pill",
+    "allow-system-audio-start",
+    "allow-system-audio-stop",
+    "allow-system-audio-get-enabled",
+    "allow-system-audio-set-enabled"
   ]
 }

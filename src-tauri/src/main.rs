@@ -55,6 +55,9 @@ const SHELL_HTML: &str = r##"<!doctype html>
     <script>
       (function () {
         var internals = window.__TAURI_INTERNALS__;
+        if (!internals || typeof internals.invoke !== 'function') {
+          document.body.style.background = 'purple';
+        }
         function invoke(cmd, args) { return internals.invoke(cmd, args || {}); }
         var intro = document.getElementById('intro');
         var urlInput = document.getElementById('url');
@@ -98,7 +101,8 @@ const SHELL_HTML: &str = r##"<!doctype html>
               } else {
                 showIntro();
               }
-            }).catch(function () {
+            }).catch(function (e) {
+              errEl.textContent = 'diag: ' + e;
               showIntro();
             });
           });
@@ -188,6 +192,16 @@ fn main() {
                 .expect("shell response builds")
         })
         .setup(|app| {
+            // the hosted client page is a remote origin to tauri's acl. grant
+            // it ipc for every saved server before the shell page can hand
+            // off to one, or the first navigation would land on a page whose
+            // ipc is rejected.
+            if let Ok(slots) = chrome::load_favorites(app.handle()) {
+                for slot in slots.iter().flatten() {
+                    chrome::grant_remote_access(app.handle(), &slot.url);
+                }
+            }
+
             let shell_url: tauri::Url = "sharkordshell://localhost/index.html"
                 .parse()
                 .expect("shell url is valid");

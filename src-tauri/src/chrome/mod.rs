@@ -51,7 +51,7 @@ fn settings_path(app: &AppHandle) -> Result<PathBuf, String> {
     Ok(data_dir(app)?.join("settings.json"))
 }
 
-fn load_favorites(app: &AppHandle) -> Result<Vec<Option<ServerSlot>>, String> {
+pub fn load_favorites(app: &AppHandle) -> Result<Vec<Option<ServerSlot>>, String> {
     let path = favorites_path(app)?;
     if !path.exists() {
         return Ok(vec![None; SLOTS]);
@@ -95,10 +95,58 @@ pub fn add_server(app: AppHandle, name: String, url: String) -> Result<usize, St
     let mut slots = load_favorites(&app)?;
     // fill the first empty slot, or replace the last one when full.
     let slot = slots.iter().position(|s| s.is_none()).unwrap_or(SLOTS - 1);
+    grant_remote_access(&app, &url);
     slots[slot] = Some(ServerSlot { name, url });
     save_favorites(&app, &slots)?;
     let _ = app.emit("chrome:servers_changed", ());
     Ok(slot)
+}
+
+// the hosted client page loads from the user's own server url, which tauri
+// treats as a remote origin. remote origins can only reach app commands
+// through an explicit capability, so every saved server url gets one: for
+// the saved servers at startup, and for new ones here. the pattern is
+// scheme + host (+ explicit port); tauri wildcards the path, query and hash.
+pub fn grant_remote_access(app: &AppHandle, url: &str) {
+    let Ok(parsed) = tauri::Url::parse(url) else {
+        println!("[acl] skipping unparseable server url: {url}");
+        return;
+    };
+    let Some(host) = parsed.host_str() else {
+        println!("[acl] server url has no host: {url}");
+        return;
+    };
+    let port = parsed.port().map(|p| format!(":{p}")).unwrap_or_default();
+    let pattern = format!("{}://{}{}", parsed.scheme(), host, port);
+    let capability = tauri::ipc::CapabilityBuilder::new(format!(
+        "remote-{}-{}{}",
+        parsed.scheme(),
+        host,
+        port.trim_start_matches(':')
+    ))
+    .window("main")
+    .local(false)
+    .remote(pattern.clone())
+    .permission("allow-capture-log")
+    .permission("allow-close-app")
+    .permission("allow-get-servers")
+    .permission("allow-add-server")
+    .permission("allow-clear-server")
+    .permission("allow-open-server")
+    .permission("allow-get-settings")
+    .permission("allow-save-settings")
+    .permission("allow-hk-start-capture")
+    .permission("allow-hk-cancel-capture")
+    .permission("allow-minimize-to-tray")
+    .permission("allow-hide-share-pill")
+    .permission("allow-system-audio-start")
+    .permission("allow-system-audio-stop")
+    .permission("allow-system-audio-get-enabled")
+    .permission("allow-system-audio-set-enabled")
+    .permission("core:event:default");
+    if let Err(e) = app.add_capability(capability) {
+        println!("[acl] failed to grant remote access for {pattern}: {e}");
+    }
 }
 
 #[tauri::command]
@@ -195,11 +243,20 @@ pub const BAR_HTML: &str = r##"<!doctype html>
   (function () {
     'use strict';
     var internals = window.__TAURI_INTERNALS__;
-    if (!internals || typeof internals.invoke !== 'function') return;
+    if (!internals || typeof internals.invoke !== 'function') {
+      document.body.style.background = 'red';
+      return;
+    }
     function invoke(cmd, args) { return internals.invoke(cmd, args || {}); }
     function barLog(message) {
       invoke('capture_log', { level: 'warn', message: '[sharkord-bar] ' + message });
     }
+    barLog('diag: bar script alive, internals present');
+    invoke('get_servers').then(function (s) {
+      barLog('diag: get_servers OK, slots=' + (s ? s.length : 0));
+    }).catch(function (e) {
+      barLog('diag: get_servers FAILED: ' + e);
+    });
 
     // drag the frameless window from anywhere on the bar that is not a button.
     document.getElementById('bar').addEventListener('mousedown', function (e) {
