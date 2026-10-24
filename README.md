@@ -6,7 +6,8 @@ Sharkord is made by [Diogo Martino](https://github.com/sharkord/sharkord). This 
 
 ## What is Thinfin?
 
-> [!NOTE] Do not use this. I have to make it clear, I only made this for my friends and me. If you decide to use it, it will be at your own risk. There is a severe lack of compatibility and features.
+> [!NOTE]
+> Do not use this. I have to make it clear, I only made this for my friends and me. If you decide to use it, it will be at your own risk. There is a severe lack of compatibility and features.
 
 Consider the Thinfin client/wrapper as designed by a fair mix of AI and human hallucinations forced into something that works on Windows. It's a lightweight [Tauri 2](https://tauri.app) shell (Rust + the system WebView2 runtime) - no Electron, no bundled browser, a few MB of binary.
 
