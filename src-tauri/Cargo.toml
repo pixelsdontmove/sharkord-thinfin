@@ -1,0 +1,29 @@
+[package]
+name = "sharkord-client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# unstable gates Window::add_child, used for the custom title bar webview.
+# we are pinned to 2.12.4, so the unstable api is stable for this build.
+tauri = { version = "2.12.4", features = ["unstable", "tray-icon", "image-png"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json"] }
+tokio-tungstenite = "0.20"
+futures-util = "0.3"
+xcap = "0.9.8"
+anyhow = "1.0"
+# same crate xcap depends on, features unify so only the jpeg encoder is added
+image = { version = "0.25", default-features = false, features = ["jpeg"] }
+base64 = "0.23"
+# native media path (path 1): wasapi loopback captures system audio.
+# pure rust, no c build. opus encode is added later once capture is proven.
+wasapi = "0.25"
+# global keyboard and mouse hook for the mute and deafen keybinds. works even
+# when the window is not focused, and supports mouse side buttons.
+rdev = "0.5"
+
+[build-dependencies]
+tauri-build = { version = "2.7.3", features = [] }
