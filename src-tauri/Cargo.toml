@@ -1,7 +1,11 @@
 [package]
-name = "sharkord-client"
-version = "0.1.0"
+name = "thinfin"
+version = "0.0.1"
 edition = "2021"
+
+[[bin]]
+name = "Thinfin"
+path = "src/main.rs"
 
 [dependencies]
 # unstable gates Window::add_child, used for the custom title bar webview.

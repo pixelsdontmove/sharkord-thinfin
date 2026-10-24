@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "sharkord-client",
-  "version": "0.1.0",
-  "identifier": "com.sharkord.client",
+  "productName": "Thinfin",
+  "version": "0.0.1",
+  "identifier": "com.thinfin.client",
   "build": {
     "devUrl": "https://example.com",
     "frontendDist": "https://example.com"
